@@ -7,18 +7,27 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ryosn.libgdxtest.gameclasses.Hero;
 
 public class GameTest extends ApplicationAdapter {
 	public static final String TITLE = "My libGDX test";
-	public static final int WINDOW_WIDTH = 800;
-	public static final int WINDOW_HEIGHT = 600;
+	public static final int WINDOW_WIDTH = 1200;
+	public static final int WINDOW_HEIGHT = 800;
 	private SpriteBatch batch;
 	private Music music;
 	private OrthographicCamera camera;
+	private Viewport viewport;
+	private TiledMapRenderer mapRenderer;
 	private Hero hero;
+	private TiledMap map;
 
 	@Override
 	public void create() {
@@ -28,16 +37,26 @@ public class GameTest extends ApplicationAdapter {
 		this.getMusic().setLooping(true);
 		this.getMusic().play();
 		this.setCamera(new OrthographicCamera());
+		this.setViewport(new FitViewport(WINDOW_WIDTH, WINDOW_HEIGHT, this.camera));
 		this.getCamera().setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.setMap(new TmxMapLoader().load("niveau1.tmx"));
+		this.setMapRenderer(new OrthogonalTiledMapRenderer(this.map));
 	}
 
 	@Override
 	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		this.getMapRenderer().setView(this.camera);
+		this.getMapRenderer().render();
 		this.getBatch().begin();
 		this.getBatch().draw(this.getHero().getSprite(), this.getHero().getX(), this.getHero().getY());
 		this.getBatch().end();
+
+		/*
+		 * this.getCamera().translate(this.getHero().getX(), this.getHero().getY());
+		 * this.getCamera().position.set(0, 0, 0); this.getCamera().update();
+		 */
 
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			this.getHero().setX((this.getHero().getX() - (200 * Gdx.graphics.getDeltaTime())));
@@ -58,7 +77,7 @@ public class GameTest extends ApplicationAdapter {
 		if (Gdx.input.isTouched()) {
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			this.camera.unproject(touchPos);
+			this.getCamera().unproject(touchPos);
 			this.getHero().setPosition(touchPos.x - (64 / 2), touchPos.y - (64 / 2));
 		}
 
@@ -66,8 +85,8 @@ public class GameTest extends ApplicationAdapter {
 
 	@Override
 	public void dispose() {
-		this.batch.dispose();
-		this.hero.getSprite().dispose();
+		this.getBatch().dispose();
+		this.getHero().getSprite().dispose();
 	}
 
 	private SpriteBatch getBatch() {
@@ -100,5 +119,29 @@ public class GameTest extends ApplicationAdapter {
 
 	private void setHero(final Hero hero) {
 		this.hero = hero;
+	}
+
+	private Viewport getViewport() {
+		return this.viewport;
+	}
+
+	private void setViewport(final Viewport viewport) {
+		this.viewport = viewport;
+	}
+
+	private TiledMapRenderer getMapRenderer() {
+		return this.mapRenderer;
+	}
+
+	private void setMapRenderer(final TiledMapRenderer mapRenderer) {
+		this.mapRenderer = mapRenderer;
+	}
+
+	private TiledMap getMap() {
+		return this.map;
+	}
+
+	private void setMap(final TiledMap map) {
+		this.map = map;
 	}
 }
