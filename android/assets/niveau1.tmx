@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="left-up" width="12" height="14" tilewidth="128" tileheight="128" infinite="0" nextobjectid="4">
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="left-up" width="16" height="16" tilewidth="128" tileheight="128" infinite="0" nextobjectid="18">
  <tileset firstgid="1" source="Tileset-Sol-niveau-1-128.128.tsx"/>
  <tileset firstgid="17" source="Tileset-Wall-Niveau-1-128.128.tsx"/>
- <layer name="sol" width="12" height="14">
+ <layer name="sol" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYMAPWBkYEtgg9AKYGCOEjxUzAdWhqweZwQQ1hw2ihoENDaOrZ4Waw4bkBnzqgWYeQHcDPvXo8sNdPa7wh4kjA3zhj2wuMeGPLM4KVU/I7cgYAF1gFWA=
+   eJy1ktEKwCAIRVuNzTXm/3/uDBaIaGIx4bxkh8RbSnZVAgf9XhvxKABxGr0s3inE9bETtwMKH1mvTvh8TpjwvfsrvrabiK/tJurnRf9wfCv/wtyRb+XPz0e+lb/8v2D4f+bv+VG30+oFyhwI4w==
   </data>
  </layer>
- <layer name="mur" width="12" height="14">
+ <layer name="mur" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYGBgEMGBhRkGFogOAjeMZIAr/EHisDRCawAA5F8BGQ==
+   eJyTYmBgEMGChRkQQBSHGikGhgYpBvIBtfWD3CmMSzEd7B/M+rGpHUr6JSDq8erHFf+w9IsuN5TiD5d+MQr0g/QCAEiGDoM=
   </data>
  </layer>
- <objectgroup name="Calque d'objets 1">
-  <object id="1" x="1029.58" y="4.12">
-   <polyline points="0,0 -3.0303,121.212 -903.03,130.303 -896.97,1651.52 503.03,1660.61 506.061,1533.33 130.303,1530.3 127.273,1387.88 363.636,1390.91 366.667,0 -3.0303,-6.06061"/>
-  </object>
-  <object id="2" x="381.09" y="382.91">
+ <objectgroup name="Calque d'objets 1" visible="0">
+  <object id="2" x="381.09" y="382.91" visible="0">
    <polyline points="0,0 3.0303,124.242 245.455,130.303 254.545,9.09091"/>
   </object>
-  <object id="3" x="381.09" y="1410.18">
+  <object id="3" x="381.09" y="1410.18" visible="0">
    <polyline points="0,0 3.0303,118.182 251.515,115.152 257.576,3.0303"/>
   </object>
+  <object id="4" x="381.09" y="1410.18" visible="0">
+   <polyline points="0,0 3.0303,118.182 251.515,115.152 257.576,3.0303"/>
+  </object>
+  <object id="6" x="393.939" y="378.788" width="248.485" height="133.333"/>
+  <object id="11" x="393.939" y="1406.06" width="239.394" height="124.242"/>
+  <object id="15" x="1160.61" y="1412.12">
+   <polygon points="0,0 -3.0303,109.091 369.697,115.152 366.667,-518.182 130.303,-518.182 124.242,0 0,-3.0303"/>
+  </object>
+  <object id="16" x="1160.61" y="3.0303">
+   <polygon points="0,0 -3.0303,115.152 760.606,124.242 763.636,1909.09 -1033.33,1915.15 -1039.39,130.303 -266.667,130.303 -272.727,0 -1154.55,-3.0303 -1157.58,2036.36 881.818,2042.42 878.788,3.0303 -6.06061,0"/>
+  </object>
+  <object id="17" x="906.061" y="-133.333">
+   <ellipse/>
+  </object>
  </objectgroup>
- <layer name="toit" width="12" height="14">
+ <layer name="toit" width="16" height="16">
   <data encoding="base64" compression="zlib">
-   eJyTZmBgkMeD0YEUFjF8AFm9OBArkaBeDoIbiFVPqntGmnpc4Q8Sl4BiYswHxQssfZDqHjEgliQBAwC1ogUn
-  </data>
- </layer>
- <layer name="toit2" width="12" height="14">
-  <data encoding="base64" compression="zlib">
-   eJxjYCAeCJGgdlT90FIviUVMDoIbSLSWqgAAkC8Big==
+   eJyTZmBgkMeC5RgYGkA0A4SNVQ0ISDFQBpD1iwOxEgX65SC4gVz95AB66ReH4IaBsp8e+nHFP0hcAorx6ccV/7D0i02OUvcPBiBJJgYBALayCH0=
   </data>
  </layer>
 </map>
