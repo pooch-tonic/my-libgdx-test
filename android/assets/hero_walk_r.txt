@@ -1,0 +1,33 @@
+hero_walk_r.png
+size: 125, 66
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+hero_idle_1r
+  rotate: false
+  xy: 1, 1
+  size: 28, 64
+  orig: 64, 64
+  offset: 20, 0
+  index: -1
+hero_walk_1r
+  rotate: false
+  xy: 31, 1
+  size: 31, 64
+  orig: 64, 64
+  offset: 20, 0
+  index: -1
+hero_walk_2r
+  rotate: false
+  xy: 64, 1
+  size: 29, 64
+  orig: 64, 64
+  offset: 19, 0
+  index: -1
+hero_walk_3r
+  rotate: false
+  xy: 95, 1
+  size: 29, 64
+  orig: 64, 64
+  offset: 20, 0
+  index: -1
