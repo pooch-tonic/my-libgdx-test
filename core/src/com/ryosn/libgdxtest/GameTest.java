@@ -28,6 +28,7 @@ public class GameTest extends ApplicationAdapter {
 	private TiledMapRenderer mapRenderer;
 	private Hero hero;
 	private TiledMap map;
+	private float stateTime;
 
 	@Override
 	public void create() {
@@ -41,37 +42,51 @@ public class GameTest extends ApplicationAdapter {
 		this.getCamera().setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setMap(new TmxMapLoader().load("niveau1.tmx"));
 		this.setMapRenderer(new OrthogonalTiledMapRenderer(this.map));
+		this.setStateTime(0f);
 	}
 
 	@Override
 	public void render() {
+		this.setStateTime(this.getStateTime() + Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		this.getMapRenderer().setView(this.camera);
 		this.getMapRenderer().render();
+
 		this.getBatch().begin();
-		this.getBatch().draw(this.getHero().getSprite(), this.getHero().getX(), this.getHero().getY());
+		this.getBatch().draw(this.getHero().getCurrentTextureRegion(this.getStateTime()), this.getHero().getX(),
+				this.getHero().getY());
 		this.getBatch().end();
 
 		/*
 		 * this.getCamera().translate(this.getHero().getX(), this.getHero().getY());
 		 * this.getCamera().position.set(0, 0, 0); this.getCamera().update();
 		 */
+		this.manageUserInteraction();
 
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			this.getHero().setX((this.getHero().getX() - (200 * Gdx.graphics.getDeltaTime())));
-		}
+	}
+
+	private void manageUserInteraction() {
+		boolean moving = false;
 
 		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			this.getHero().setX((this.getHero().getX() + (200 * Gdx.graphics.getDeltaTime())));
+			this.getHero().moveRight();
+			moving = true;
+		} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+			this.getHero().moveLeft();
+			moving = true;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			this.getHero().setY((this.getHero().getY() + (200 * Gdx.graphics.getDeltaTime())));
+			this.getHero().moveUp();
+			moving = true;
+		} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+			this.getHero().moveDown();
+			moving = true;
 		}
 
-		if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-			this.getHero().setY((this.getHero().getY() - (200 * Gdx.graphics.getDeltaTime())));
+		if (!moving) {
+			this.resetStateTime();
 		}
 
 		if (Gdx.input.isTouched()) {
@@ -80,13 +95,18 @@ public class GameTest extends ApplicationAdapter {
 			this.getCamera().unproject(touchPos);
 			this.getHero().setPosition(touchPos.x - (64 / 2), touchPos.y - (64 / 2));
 		}
-
 	}
 
 	@Override
 	public void dispose() {
 		this.getBatch().dispose();
-		this.getHero().getSprite().dispose();
+		this.getHero().disposeAtlas();
+		this.getMap().dispose();
+		this.getMusic().dispose();
+	}
+
+	private void resetStateTime() {
+		this.setStateTime(0f);
 	}
 
 	private SpriteBatch getBatch() {
@@ -143,5 +163,13 @@ public class GameTest extends ApplicationAdapter {
 
 	private void setMap(final TiledMap map) {
 		this.map = map;
+	}
+
+	private float getStateTime() {
+		return this.stateTime;
+	}
+
+	private void setStateTime(final float stateTime) {
+		this.stateTime = stateTime;
 	}
 }

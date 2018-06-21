@@ -1,7 +1,7 @@
 package com.ryosn.libgdxtest.gameclasses;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
 public class Hero extends Character {
@@ -9,11 +9,13 @@ public class Hero extends Character {
 	private static final long serialVersionUID = -1933624957828747537L;
 
 	public Hero() {
-		super(new Texture(Gdx.files.internal("hero_idle_1d.png")));
+		this(new Vector2(0, 0));
 	}
 
 	public Hero(final Vector2 position) {
-		super(new Texture(Gdx.files.internal("hero_idle_1d.png")), position);
+		super(position);
+		this.setAtlas(new TextureAtlas(Gdx.files.internal("hero_walk.txt")));
+		this.setAnimationCurrent(this.getAnimationWalkDown());
 	}
 
 }
