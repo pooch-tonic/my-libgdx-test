@@ -48,31 +48,33 @@ public class GameTest extends ApplicationAdapter {
 		this.setStateTime(this.getStateTime() + Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		// this.getCamera().translate(this.getHero().getX(), this.getHero().getY());
-		// this.getCamera().position.set(this.getHero().getX(), this.getHero().getY(),
-		// 0);
+
+		this.manageCamera();
+		this.manageMap();
+		this.manageBatch();
+		this.manageUserInteraction();
+
+	}
+
+	private void manageCamera() {
 		this.getCamera().position.set(this.getHero().getX() + (this.getHero().getWidth() / 2),
-				this.getHero().getY() + (this.getHero().getHeight() / 2), 0);
-		// this.getCamera().viewportWidth = Gdx.graphics.getWidth() /
-		// this.getHero().getZoom();
-		// this.getCamera().viewportHeight = Gdx.graphics.getHeight() /
-		// this.getHero().getZoom();
+				this.getHero().getY() + (this.getHero().getHeight() / 2), 100);
 		this.getCamera().update();
 		this.getBatch().setProjectionMatrix(this.getCamera().combined);
+	}
+
+	private void manageMap() {
 		this.getMapRenderer().setView(this.getCamera());
 		this.getMapRenderer().render();
+		// TiledMapTileLayer layerGround = new TiledMapTileLayer();
+		// this.getMapRenderer().renderTileLayer();
+	}
 
+	private void manageBatch() {
 		this.getBatch().begin();
 		this.getBatch().draw(this.getHero().getCurrentTextureRegion(this.getStateTime()), this.getHero().getX(),
 				this.getHero().getY());
 		this.getBatch().end();
-
-		/*
-		 * this.getCamera().translate(this.getHero().getX(), this.getHero().getY());
-		 * this.getCamera().position.set(0, 0, 0); this.getCamera().update();
-		 */
-		this.manageUserInteraction();
-
 	}
 
 	private void manageUserInteraction() {
