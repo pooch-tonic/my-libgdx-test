@@ -16,6 +16,9 @@ public class Hero extends Character {
 		super(position);
 		this.setAtlas(new TextureAtlas(Gdx.files.internal("hero_walk.txt")));
 		this.setAnimationCurrent(this.getAnimationWalkDown());
+		this.setWalkSpeed(150);
+		this.setWalkDelta(0.15f);
+		this.setIdleDelta(0.15f);
 	}
 
 }

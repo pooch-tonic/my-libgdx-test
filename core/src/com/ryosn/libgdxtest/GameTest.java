@@ -13,8 +13,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ryosn.libgdxtest.gameclasses.Hero;
 
 public class GameTest extends ApplicationAdapter {
@@ -22,9 +20,9 @@ public class GameTest extends ApplicationAdapter {
 	public static final int WINDOW_WIDTH = 1200;
 	public static final int WINDOW_HEIGHT = 800;
 	private SpriteBatch batch;
+	private DirectionsEnum lastDirection;
 	private Music music;
 	private OrthographicCamera camera;
-	private Viewport viewport;
 	private TiledMapRenderer mapRenderer;
 	private Hero hero;
 	private TiledMap map;
@@ -38,11 +36,11 @@ public class GameTest extends ApplicationAdapter {
 		this.getMusic().setLooping(true);
 		this.getMusic().play();
 		this.setCamera(new OrthographicCamera());
-		this.setViewport(new FitViewport(WINDOW_WIDTH, WINDOW_HEIGHT, this.camera));
 		this.getCamera().setToOrtho(false, WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setMap(new TmxMapLoader().load("niveau1.tmx"));
 		this.setMapRenderer(new OrthogonalTiledMapRenderer(this.map));
 		this.setStateTime(0f);
+		this.setLastDireciton(DirectionsEnum.DOWN);
 	}
 
 	@Override
@@ -50,7 +48,18 @@ public class GameTest extends ApplicationAdapter {
 		this.setStateTime(this.getStateTime() + Gdx.graphics.getDeltaTime());
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		this.getMapRenderer().setView(this.camera);
+		// this.getCamera().translate(this.getHero().getX(), this.getHero().getY());
+		// this.getCamera().position.set(this.getHero().getX(), this.getHero().getY(),
+		// 0);
+		this.getCamera().position.set(this.getHero().getX() + (this.getHero().getWidth() / 2),
+				this.getHero().getY() + (this.getHero().getHeight() / 2), 0);
+		// this.getCamera().viewportWidth = Gdx.graphics.getWidth() /
+		// this.getHero().getZoom();
+		// this.getCamera().viewportHeight = Gdx.graphics.getHeight() /
+		// this.getHero().getZoom();
+		this.getCamera().update();
+		this.getBatch().setProjectionMatrix(this.getCamera().combined);
+		this.getMapRenderer().setView(this.getCamera());
 		this.getMapRenderer().render();
 
 		this.getBatch().begin();
@@ -69,24 +78,41 @@ public class GameTest extends ApplicationAdapter {
 	private void manageUserInteraction() {
 		boolean moving = false;
 
-		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			this.getHero().moveRight();
-			moving = true;
-		} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			this.getHero().moveLeft();
-			moving = true;
-		}
-
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			this.getHero().moveUp();
+			this.setLastDireciton(DirectionsEnum.UP);
 			moving = true;
 		} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			this.getHero().moveDown();
+			this.setLastDireciton(DirectionsEnum.DOWN);
+			moving = true;
+		}
+
+		if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			this.getHero().moveRight();
+			this.setLastDireciton(DirectionsEnum.RIGHT);
+			moving = true;
+		} else if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+			this.getHero().moveLeft();
+			this.setLastDireciton(DirectionsEnum.LEFT);
 			moving = true;
 		}
 
 		if (!moving) {
-			this.resetStateTime();
+			switch (this.getLastDirection()) {
+			case UP:
+				this.getHero().idleUp();
+				break;
+			case DOWN:
+				this.getHero().idleDown();
+				break;
+			case RIGHT:
+				this.getHero().idleRight();
+				break;
+			case LEFT:
+				this.getHero().idleLeft();
+				break;
+			}
 		}
 
 		if (Gdx.input.isTouched()) {
@@ -103,10 +129,6 @@ public class GameTest extends ApplicationAdapter {
 		this.getHero().disposeAtlas();
 		this.getMap().dispose();
 		this.getMusic().dispose();
-	}
-
-	private void resetStateTime() {
-		this.setStateTime(0f);
 	}
 
 	private SpriteBatch getBatch() {
@@ -141,14 +163,6 @@ public class GameTest extends ApplicationAdapter {
 		this.hero = hero;
 	}
 
-	private Viewport getViewport() {
-		return this.viewport;
-	}
-
-	private void setViewport(final Viewport viewport) {
-		this.viewport = viewport;
-	}
-
 	private TiledMapRenderer getMapRenderer() {
 		return this.mapRenderer;
 	}
@@ -171,5 +185,13 @@ public class GameTest extends ApplicationAdapter {
 
 	private void setStateTime(final float stateTime) {
 		this.stateTime = stateTime;
+	}
+
+	private DirectionsEnum getLastDirection() {
+		return this.lastDirection;
+	}
+
+	private void setLastDireciton(final DirectionsEnum lastDirection) {
+		this.lastDirection = lastDirection;
 	}
 }
